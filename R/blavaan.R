@@ -323,6 +323,14 @@ blavaan <- function(...,  # default lavaan arguments
         if(!any(is.na(unlist(lavInspect(LAV, 'data'))))) dotdotdot$missing <- "listwise"
     }
 
+    if(!("verbose" %in% names(LAV@Options))) {
+      if(!("verbose" %in% names(dotdotdot))) {
+        LAV@Options$verbose <- FALSE
+      } else {
+        LAV@Options$verbose <- dotdotdot$verbose
+      }
+    }
+
     # for initial values/some parameter setup:
     if(jag.do.fit){
         LAV2 <- try(do.call("lavaan", dotdotdot), silent = TRUE)
@@ -502,7 +510,7 @@ blavaan <- function(...,  # default lavaan arguments
         lavoptions$llnsamp <- mcmcextra$data$llnsamp
     }
         
-    verbose <- lavoptions$verbose
+    verbose <- FALSE
 
     # redo estimation + vcov + test
     # 6. estimate free parameters
